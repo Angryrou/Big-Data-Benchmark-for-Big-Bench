@@ -128,7 +128,7 @@ query_run_main_method () {
       #write header    
       runCmdWithErrorCheck echo '"clicks_in_category","college_education","male","clicks_in_1","clicks_in_2","clicks_in_3","clicks_in_4","clicks_in_5","clicks_in_6","clicks_in_7"' > "${TMP_LOG_REG_IN_FILE}"
       # remove garbage directories created by spark
-      runCmdWithErrorCheck hadoop fs -rm -r "${TEMP_DIR/.hive-staging_hive*}"
+      runCmdWithErrorCheck hadoop fs -rm -r "${TEMP_DIR/}"/.hive-staging_hive* >> "${TMP_LOG_REG_IN_FILE}"
       # append hive result
       runCmdWithErrorCheck hadoop fs -cat "${TEMP_DIR}"/* >> "${TMP_LOG_REG_IN_FILE}"
       echo "streaming result from hive ... done"
