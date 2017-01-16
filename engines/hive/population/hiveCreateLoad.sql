@@ -5,9 +5,9 @@
 --
 --No license under any patent, copyright, trade secret or other intellectual property right is granted to or conferred upon you by disclosure or delivery of the Materials, either expressly, by implication, inducement, estoppel or otherwise. Any license under such intellectual property rights must be express and approved by Intel in writing.
 
-set hdfsDataPath=${env:BIG_BENCH_HDFS_ABSOLUTE_INIT_DATA_DIR};
+set hdfsDataPath=/dfs/pristine/benchmarks/bigbench/data;
 set fieldDelimiter=|;
-set tableFormat=${env:BIG_BENCH_hive_default_fileformat_source_table};
+set tableFormat=ORC;
 set temporaryTableSuffix=_temporary;
 
 set customerTableName=customer;
@@ -736,7 +736,7 @@ DROP TABLE ${hiveconf:webSalesTableName}${hiveconf:temporaryTableSuffix};
 -- !echo Create temporary table: ${hiveconf:webReturnsTableName}${hiveconf:temporaryTableSuffix};
 DROP TABLE IF EXISTS ${hiveconf:webReturnsTableName}${hiveconf:temporaryTableSuffix};
 CREATE EXTERNAL TABLE ${hiveconf:webReturnsTableName}${hiveconf:temporaryTableSuffix}
-  ( wr_returned_date_sk       bigint 
+  ( wr_returned_date_sk       bigint
   , wr_returned_time_sk       bigint
   , wr_item_sk                bigint                --not null
   , wr_refunded_customer_sk   bigint
@@ -835,7 +835,7 @@ DROP TABLE IF EXISTS ${hiveconf:reviewsTableName}${hiveconf:temporaryTableSuffix
 CREATE EXTERNAL TABLE ${hiveconf:reviewsTableName}${hiveconf:temporaryTableSuffix}
 (   pr_review_sk            bigint              --not null
   , pr_review_date          string
-  , pr_review_time          string 
+  , pr_review_time          string
   , pr_review_rating        int                 --not null
   , pr_item_sk              bigint              --not null
   , pr_user_sk              bigint

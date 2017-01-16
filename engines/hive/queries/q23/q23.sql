@@ -74,7 +74,7 @@ CREATE TABLE ${hiveconf:RESULT_TABLE} (
   cov_consecutive      decimal(15,5)
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'
-STORED AS ${env:BIG_BENCH_hive_default_fileformat_result_table} LOCATION '${hiveconf:RESULT_DIR}';
+STORED AS ${hiveconf:bigbench.tableformat} LOCATION '${hiveconf:RESULT_DIR}';
 
 -- Begin: the real query part
 INSERT INTO TABLE ${hiveconf:RESULT_TABLE}

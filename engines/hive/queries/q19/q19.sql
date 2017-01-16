@@ -12,9 +12,9 @@
 -- the online reviews for these items to see if there are any major negative reviews.
 
 
-ADD JAR ${env:BIG_BENCH_QUERIES_DIR}/Resources/opennlp-maxent-3.0.3.jar;
-ADD JAR ${env:BIG_BENCH_QUERIES_DIR}/Resources/opennlp-tools-1.6.0.jar;
-ADD JAR ${env:BIG_BENCH_QUERIES_DIR}/Resources/bigbenchqueriesmr.jar;
+ADD JAR ${hiveconf:bigbench.resources.dir}/opennlp-maxent-3.0.3.jar;
+ADD JAR ${hiveconf:bigbench.resources.dir}/opennlp-tools-1.6.0.jar;
+ADD JAR ${hiveconf:bigbench.resources.dir}/bigbenchqueriesmr.jar;
 CREATE TEMPORARY FUNCTION extract_sentiment AS 'io.bigdatabenchmark.v1.queries.q10.SentimentUDF';
 
 --Result  returned items with negative sentiment --------------------------------------------
@@ -40,7 +40,7 @@ CREATE TABLE ${hiveconf:RESULT_TABLE} (
   sentiment_word  STRING
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'
-STORED AS ${env:BIG_BENCH_hive_default_fileformat_result_table} LOCATION '${hiveconf:RESULT_DIR}';
+STORED AS ${hiveconf:bigbench.tableformat} LOCATION '${hiveconf:RESULT_DIR}';
 
 ---- the real query --------------
 INSERT INTO TABLE ${hiveconf:RESULT_TABLE}

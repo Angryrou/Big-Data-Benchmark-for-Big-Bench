@@ -10,9 +10,9 @@
 -- check if there are any negative reviews regarding these stores available online.
 
 -- Resources
-ADD JAR ${env:BIG_BENCH_QUERIES_DIR}/Resources/opennlp-maxent-3.0.3.jar;
-ADD JAR ${env:BIG_BENCH_QUERIES_DIR}/Resources/opennlp-tools-1.6.0.jar;
-ADD JAR ${env:BIG_BENCH_QUERIES_DIR}/Resources/bigbenchqueriesmr.jar;
+ADD JAR ${hiveconf:bigbench.resources.dir}/opennlp-maxent-3.0.3.jar;
+ADD JAR ${hiveconf:bigbench.resources.dir}/opennlp-tools-1.6.0.jar;
+ADD JAR ${hiveconf:bigbench.resources.dir}/bigbenchqueriesmr.jar;
 CREATE TEMPORARY FUNCTION extract_NegSentiment AS 'io.bigdatabenchmark.v1.queries.q18.NegativeSentimentUDF';
 
 --STEP 1: calculate and filter stores with linear regression: stores with flat or declining sales in 3 consecutive months
@@ -106,7 +106,7 @@ CREATE TABLE ${hiveconf:RESULT_TABLE} (
   sentiment_word STRING
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'
-STORED AS ${env:BIG_BENCH_hive_default_fileformat_result_table} LOCATION '${hiveconf:RESULT_DIR}';
+STORED AS ${hiveconf:bigbench.tableformat} LOCATION '${hiveconf:RESULT_DIR}';
 
 -- the real query - filter
 INSERT INTO TABLE ${hiveconf:RESULT_TABLE}
