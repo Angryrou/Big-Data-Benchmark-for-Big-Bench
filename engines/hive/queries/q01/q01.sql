@@ -22,6 +22,7 @@
 
 
 -- Resources
+${hiveconf:
 ADD JAR ${hiveconf:bigbench.resources.dir}/bigbenchqueriesmr.jar;
 CREATE TEMPORARY FUNCTION makePairs AS 'io.bigdatabenchmark.v1.queries.udf.PairwiseUDTF';
 
