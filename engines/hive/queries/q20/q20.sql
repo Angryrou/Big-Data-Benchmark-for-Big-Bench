@@ -49,77 +49,77 @@ CREATE TABLE ${hiveconf:TEMP_TABLE} (
 
 -- there are two possible version. Both are valid points of view
 -- version ONE where customers without returns are also part of the analysis
-INSERT INTO TABLE ${hiveconf:TEMP_TABLE} 
-SELECT
-  ss_customer_sk AS user_sk,
-  round(CASE WHEN ((returns_count IS NULL) OR (orders_count IS NULL) OR ((returns_count / orders_count) IS NULL) ) THEN 0.0 ELSE (returns_count / orders_count) END, 7) AS orderRatio,
-  round(CASE WHEN ((returns_items IS NULL) OR (orders_items IS NULL) OR ((returns_items / orders_items) IS NULL) ) THEN 0.0 ELSE (returns_items / orders_items) END, 7) AS itemsRatio,
-  round(CASE WHEN ((returns_money IS NULL) OR (orders_money IS NULL) OR ((returns_money / orders_money) IS NULL) ) THEN 0.0 ELSE (returns_money / orders_money) END, 7) AS monetaryRatio,
-  round(CASE WHEN ( returns_count IS NULL                                                                        ) THEN 0.0 ELSE  returns_count                 END, 0) AS frequency
-FROM
-  (
-    SELECT
-      ss_customer_sk,
-      -- return order ratio
-      COUNT(distinct(ss_ticket_number)) AS orders_count,
-      -- return ss_item_sk ratio
-      COUNT(ss_item_sk) AS orders_items,
-      -- return monetary amount ratio
-      SUM( ss_net_paid ) AS orders_money
-    FROM store_sales s
-    GROUP BY ss_customer_sk
-  ) orders
-  LEFT OUTER JOIN
-  (
-    SELECT
-      sr_customer_sk,
-      -- return order ratio
-      count(distinct(sr_ticket_number)) as returns_count,
-      -- return ss_item_sk ratio
-      COUNT(sr_item_sk) as returns_items,
-      -- return monetary amount ratio
-      SUM( sr_return_amt ) AS returns_money
-    FROM store_returns
-    GROUP BY sr_customer_sk
-  ) returned ON ss_customer_sk=sr_customer_sk
-ORDER BY user_sk
-;
+-- INSERT INTO TABLE ${hiveconf:TEMP_TABLE}
+-- SELECT
+--   ss_customer_sk AS user_sk,
+--   round(CASE WHEN ((returns_count IS NULL) OR (orders_count IS NULL) OR ((returns_count / orders_count) IS NULL) ) THEN 0.0 ELSE (returns_count / orders_count) END, 7) AS orderRatio,
+--   round(CASE WHEN ((returns_items IS NULL) OR (orders_items IS NULL) OR ((returns_items / orders_items) IS NULL) ) THEN 0.0 ELSE (returns_items / orders_items) END, 7) AS itemsRatio,
+--   round(CASE WHEN ((returns_money IS NULL) OR (orders_money IS NULL) OR ((returns_money / orders_money) IS NULL) ) THEN 0.0 ELSE (returns_money / orders_money) END, 7) AS monetaryRatio,
+--   round(CASE WHEN ( returns_count IS NULL                                                                        ) THEN 0.0 ELSE  returns_count                 END, 0) AS frequency
+-- FROM
+--   (
+--     SELECT
+--       ss_customer_sk,
+--       -- return order ratio
+--       COUNT(distinct(ss_ticket_number)) AS orders_count,
+--       -- return ss_item_sk ratio
+--       COUNT(ss_item_sk) AS orders_items,
+--       -- return monetary amount ratio
+--       SUM( ss_net_paid ) AS orders_money
+--     FROM store_sales s
+--     GROUP BY ss_customer_sk
+--   ) orders
+--   LEFT OUTER JOIN
+--   (
+--     SELECT
+--       sr_customer_sk,
+--       -- return order ratio
+--       count(distinct(sr_ticket_number)) as returns_count,
+--       -- return ss_item_sk ratio
+--       COUNT(sr_item_sk) as returns_items,
+--       -- return monetary amount ratio
+--       SUM( sr_return_amt ) AS returns_money
+--     FROM store_returns
+--     GROUP BY sr_customer_sk
+--   ) returned ON ss_customer_sk=sr_customer_sk
+-- ORDER BY user_sk
+-- ;
 
 
 --version TWO where customers are filtered out that don't have any returns
--- INSERT INTO TABLE ${hiveconf:TEMP_TABLE}
--- SELECT
--- ss_customer_sk AS user_sk,
--- IF ( (returns_count IS NULL) OR (orders_count IS NULL) OR ((orders_count / returns_count) IS NULL) , 0 , (orders_count / returns_count) ) AS orderRatio,
--- IF ( (returns_items IS NULL) OR (orders_items IS NULL) OR ((orders_items / returns_items) IS NULL) , 0 , (orders_items / returns_items) ) AS itemsRatio,
--- IF ( (returns_money IS NULL) OR (orders_money IS NULL) OR ((orders_money / returns_money) IS NULL) , 0 , (orders_money / returns_money) ) AS monetaryRatio,
--- IF (  returns_count IS NULL                                                                        , 0 ,  returns_count                 ) AS frequency
--- FROM
--- (
--- SELECT
--- ss_customer_sk,
--- -- return order ratio
--- count(distinct(ss_ticket_number)) as orders_count,
--- -- return ss_item_sk ratio
--- COUNT(ss_item_sk) as orders_items,
--- -- return monetary amount ratio
--- SUM( ss_net_paid ) AS orders_money
--- FROM store_sales s
--- GROUP BY ss_customer_sk
--- ) orders,
--- (
--- SELECT
--- sr_customer_sk,
--- -- return order ratio
--- count(distinct(sr_ticket_number)) as returns_count,
--- -- return ss_item_sk ratio
--- COUNT(sr_item_sk) as returns_items,
--- -- return monetary amount ratio
--- SUM( sr_return_amt ) AS returns_money
--- FROM store_returns
--- GROUP BY sr_customer_sk
--- ) returned
--- WHERE ss_customer_sk=sr_customer_sk
--- -- HAVING frequency > 1  -- this would filter out all customers that do not have returns
--- CLUSTER BY user_sk
--- ;
+INSERT INTO TABLE ${hiveconf:TEMP_TABLE}
+SELECT
+ss_customer_sk AS user_sk,
+IF ( (returns_count IS NULL) OR (orders_count IS NULL) OR ((orders_count / returns_count) IS NULL) , 0 , (orders_count / returns_count) ) AS orderRatio,
+IF ( (returns_items IS NULL) OR (orders_items IS NULL) OR ((orders_items / returns_items) IS NULL) , 0 , (orders_items / returns_items) ) AS itemsRatio,
+IF ( (returns_money IS NULL) OR (orders_money IS NULL) OR ((orders_money / returns_money) IS NULL) , 0 , (orders_money / returns_money) ) AS monetaryRatio,
+IF (  returns_count IS NULL                                                                        , 0 ,  returns_count                 ) AS frequency
+FROM
+(
+SELECT
+ss_customer_sk,
+-- return order ratio
+count(distinct(ss_ticket_number)) as orders_count,
+-- return ss_item_sk ratio
+COUNT(ss_item_sk) as orders_items,
+-- return monetary amount ratio
+SUM( ss_net_paid ) AS orders_money
+FROM store_sales s
+GROUP BY ss_customer_sk
+) orders,
+(
+SELECT
+sr_customer_sk,
+-- return order ratio
+count(distinct(sr_ticket_number)) as returns_count,
+-- return ss_item_sk ratio
+COUNT(sr_item_sk) as returns_items,
+-- return monetary amount ratio
+SUM( sr_return_amt ) AS returns_money
+FROM store_returns
+GROUP BY sr_customer_sk
+) returned
+WHERE ss_customer_sk=sr_customer_sk
+-- HAVING frequency > 1  -- this would filter out all customers that do not have returns
+CLUSTER BY user_sk
+;
