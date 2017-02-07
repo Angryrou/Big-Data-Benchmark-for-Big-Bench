@@ -24,7 +24,7 @@ query_run_main_method () {
   fi
 
   #EXECUTION Plan:
-  #step 1.  hive q20.sql_old    :  Run hive querys to extract kmeans input data
+  #step 1.  hive q20.sql    :  Run hive querys to extract kmeans input data
   #step 2.  mahout input    :  Generating sparse vectors
   #step 3.  mahout kmeans    :  Calculating k-means"
   #step 4.  mahout dump > hdfs/res:  Converting result and copy result do hdfs query result folder
