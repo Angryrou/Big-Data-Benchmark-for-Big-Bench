@@ -51,9 +51,33 @@ query_run_main_method () {
   if [[ -z "$DEBUG_QUERY_PART" || $DEBUG_QUERY_PART -eq 2 ]] ; then
 
     ##########################
+    #run with spark, but use CSV as transport from HIVE -> spark (DEPRECATED)
+    ##########################
+    if [[ "$BIG_BENCH_DEFAULT_ENGINE" == "hive" && "$BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK" == "spark" ]] ; then
+
+      input="--fromHiveMetastore false --input ${TEMP_DIR}"
+      output="${RESULT_DIR}/"
+      cluster_centers=8
+      clustering_iterations=20
+      initialClusters="" #empty: random initial cluster (fixed seed)
+      #initialClusters="--initialClustersFile <file>"
+
+      echo "========================="
+      echo "$QUERY_NAME Step 2/3: Calculating KMeans with spark using CSV as intermediate format(DEPRECATED)"
+      echo "intput: ${input}"
+      echo "result output: $output"
+      echo "========================="
+
+                      echo $BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK_SPARK_BINARY  --class io.bigdatabenchmark.v1.queries.KMeansClustering "$BIG_BENCH_QUERIES_DIR/Resources/bigbench-ml-spark.jar" --csvInputDelimiter ' '  $input --output "$output" --num-clusters $cluster_centers --iterations $clustering_iterations --query-num $QUERY_NAME ${initialClusters} --saveClassificationResult true --saveMetaInfo true --verbose false
+      runCmdWithErrorCheck $BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK_SPARK_BINARY  --class io.bigdatabenchmark.v1.queries.KMeansClustering "$BIG_BENCH_QUERIES_DIR/Resources/bigbench-ml-spark.jar" --csvInputDelimiter ' '  $input --output "$output" --num-clusters $cluster_centers --iterations $clustering_iterations --query-num $QUERY_NAME ${initialClusters} --saveClassificationResult true --saveMetaInfo true --verbose false
+
+      RETURN_CODE=$?
+      if [[ $RETURN_CODE -ne 0 ]] ;  then return $RETURN_CODE; fi
+
+    ##########################
     #run with spark (default) 
     ##########################
-    if [[ -z "$BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK" || "$BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK" == "spark" ]] ; then
+    elif [[ "$BIG_BENCH_DEFAULT_ENGINE" == "spark_sql" && "$BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK" == "spark" ]] ; then
       
       input="--fromHiveMetastore true --input ${BIG_BENCH_DATABASE}.${TEMP_TABLE}"
       output="${RESULT_DIR}/"
@@ -70,30 +94,6 @@ query_run_main_method () {
      
                       echo $BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK_SPARK_BINARY  --class io.bigdatabenchmark.v1.queries.KMeansClustering "$BIG_BENCH_QUERIES_DIR/Resources/bigbench-ml-spark.jar"  $input --output "$output" --num-clusters $cluster_centers --iterations $clustering_iterations --query-num $QUERY_NAME ${initialClusters} --saveClassificationResult true --saveMetaInfo true --verbose false 
       runCmdWithErrorCheck $BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK_SPARK_BINARY  --class io.bigdatabenchmark.v1.queries.KMeansClustering "$BIG_BENCH_QUERIES_DIR/Resources/bigbench-ml-spark.jar"  $input --output "$output" --num-clusters $cluster_centers --iterations $clustering_iterations --query-num $QUERY_NAME ${initialClusters} --saveClassificationResult true --saveMetaInfo true --verbose false 
-
-      RETURN_CODE=$?
-      if [[ $RETURN_CODE -ne 0 ]] ;  then return $RETURN_CODE; fi
-      
-    ##########################
-    #run with spark, but use CSV as transport from HIVE -> spark (DEPRECATED)
-    ##########################
-    elif [[ -z "$BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK" || "$BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK" == "spark-csv" ]] ; then
-      
-      input="--fromHiveMetastore false --input ${TEMP_DIR}"
-      output="${RESULT_DIR}/"
-      cluster_centers=8
-      clustering_iterations=20
-      initialClusters="" #empty: random initial cluster (fixed seed)
-      #initialClusters="--initialClustersFile <file>"
-      
-      echo "========================="
-      echo "$QUERY_NAME Step 2/3: Calculating KMeans with spark using CSV as intermediate format(DEPRECATED)"
-      echo "intput: ${input}"
-      echo "result output: $output"
-      echo "========================="
-     
-                      echo $BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK_SPARK_BINARY  --class io.bigdatabenchmark.v1.queries.KMeansClustering "$BIG_BENCH_QUERIES_DIR/Resources/bigbench-ml-spark.jar" --csvInputDelimiter ' '  $input --output "$output" --num-clusters $cluster_centers --iterations $clustering_iterations --query-num $QUERY_NAME ${initialClusters} --saveClassificationResult true --saveMetaInfo true --verbose false 
-      runCmdWithErrorCheck $BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK_SPARK_BINARY  --class io.bigdatabenchmark.v1.queries.KMeansClustering "$BIG_BENCH_QUERIES_DIR/Resources/bigbench-ml-spark.jar" --csvInputDelimiter ' '  $input --output "$output" --num-clusters $cluster_centers --iterations $clustering_iterations --query-num $QUERY_NAME ${initialClusters} --saveClassificationResult true --saveMetaInfo true --verbose false 
 
       RETURN_CODE=$?
       if [[ $RETURN_CODE -ne 0 ]] ;  then return $RETURN_CODE; fi
