@@ -85,7 +85,6 @@ runCmdWithErrorCheck () {
 ## determine base directory
 ## ===================================================
 cd "$(dirname ${BASH_SOURCE[0]})/.."
-export BIG_BENCH_HOME="$PWD"
 cd "$OLDPWD"
 
 ## ===================================================
@@ -93,10 +92,10 @@ cd "$OLDPWD"
 ## ===================================================
 export BIG_BENCH_VERSION="1.0"
 export BIG_BENCH_BIN_DIR="$BIG_BENCH_HOME/bin"
-export BIG_BENCH_CONF_DIR="$BIG_BENCH_HOME/conf"
+#export BIG_BENCH_CONF_DIR="$BIG_BENCH_HOME/conf"
 export BIG_BENCH_DATA_GENERATOR_DIR="$BIG_BENCH_HOME/data-generator"
 export BIG_BENCH_TOOLS_DIR="$BIG_BENCH_HOME/tools"
-export BIG_BENCH_LOGS_DIR="$BIG_BENCH_HOME/logs"
+#export BIG_BENCH_LOGS_DIR="$BIG_BENCH_HOME/logs"
 
 ## ===================================================
 ## Data generation options
@@ -120,7 +119,7 @@ find "$BIG_BENCH_HOME" -name '*.py' -exec chmod 755 {} +
 ## ===================================================
 ## source user configurable settings
 ## ===================================================
-USER_SETTINGS="$BIG_BENCH_CONF_DIR/userSettings.conf"
+USER_SETTINGS="$BIG_BENCH_CONF_DIR/conf/userSettings.conf"
 if [ ! -f "$USER_SETTINGS" ]
 then
   echo "User settings file $USER_SETTINGS not found"
@@ -259,7 +258,7 @@ export BIG_BENCH_BENCHMARK_PHASE="${USER_BENCHMARK_PHASE:-"$BIG_BENCH_DEFAULT_BE
 export BIG_BENCH_STREAM_NUMBER="${USER_STREAM_NUMBER:-"0"}"
 
 export BIG_BENCH_ENGINE_DIR="$BIG_BENCH_HOME/engines/$BIG_BENCH_ENGINE"
-export BIG_BENCH_ENGINE_CONF_DIR="$BIG_BENCH_ENGINE_DIR/conf"
+export BIG_BENCH_ENGINE_CONF_DIR="$BIG_BENCH_CONF_DIR/engines/${BIG_BENCH_DEFAULT_ENGINE}/conf"
 
 # test if numeric values are indeed numeric
 if [ -n "`echo "$BIG_BENCH_MAP_TASKS" | sed -e 's/[0-9]*//g'`" ]
