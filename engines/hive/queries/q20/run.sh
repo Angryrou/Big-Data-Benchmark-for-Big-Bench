@@ -11,6 +11,11 @@ HDFS_RESULT_FILE="${RESULT_DIR}/cluster.txt"
 
 query_run_main_method () {
 
+ if [ $BIG_BENCH_DEFAULT_ENGINE == "hive" ] ; then
+   echo "Using old version of the query"
+   QUERY_NAME="${QUERY_NAME}_old"
+ fi
+
  QUERY_SCRIPT="$QUERY_DIR/$QUERY_NAME.sql"
  if [[ $BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK == 'mahout' || $BIG_BENCH_ENGINE_HIVE_ML_FRAMEWORK == 'spark-csv' ]] ; then
    #store table as CSV - this code path is deprecated 

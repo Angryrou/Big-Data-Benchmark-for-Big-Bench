@@ -17,10 +17,10 @@
 -- IMPLEMENTATION NOTICE:
 -- hive provides the input for the clustering program
 -- The input format for the clustering is:
---   user surrogate key, 
---   order ratio (number of returns / number of orders), 
---   item ratio (number of returned items / number of ordered items), 
---   money ratio (returned money / payed money), 
+--   user surrogate key,
+--   order ratio (number of returns / number of orders),
+--   item ratio (number of returned items / number of ordered items),
+--   money ratio (returned money / payed money),
 --   number of returns
 
 
@@ -36,7 +36,7 @@ set hive.optimize.sampling.orderby;
 set hive.optimize.sampling.orderby.number;
 set hive.optimize.sampling.orderby.percent;
 
---ML-algorithms expect double values as input for their Vectors. 
+--ML-algorithms expect double values as input for their Vectors.
 DROP TABLE IF EXISTS ${hiveconf:TEMP_TABLE};
 CREATE TABLE ${hiveconf:TEMP_TABLE} (
    user_sk       BIGINT, --used as "label", all following values are used as Vector for ML-algorithm
@@ -49,7 +49,7 @@ CREATE TABLE ${hiveconf:TEMP_TABLE} (
 
 -- there are two possible version. Both are valid points of view
 -- version ONE where customers without returns are also part of the analysis
-INSERT INTO TABLE ${hiveconf:TEMP_TABLE} 
+INSERT INTO TABLE ${hiveconf:TEMP_TABLE}
 SELECT
   ss_customer_sk AS user_sk,
   round(CASE WHEN ((returns_count IS NULL) OR (orders_count IS NULL) OR ((returns_count / orders_count) IS NULL) ) THEN 0.0 ELSE (returns_count / orders_count) END, 7) AS orderRatio,
