@@ -58,7 +58,7 @@ STORED AS TEXTFILE LOCATION '${hiveconf:TEMP_DIR}';
 
 
 -- there are two possible version. Both are valid points of view
-version ONE where customers without returns are also part of the analysis
+-- version ONE where customers without returns are also part of the analysis
 INSERT INTO TABLE ${hiveconf:TEMP_TABLE}
 SELECT
   ss_customer_sk AS user_sk,
