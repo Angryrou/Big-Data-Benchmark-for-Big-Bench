@@ -36,6 +36,11 @@ set bigbench.hive.optimize.sampling.orderby.percent=0.1;
 set hive.default.fileformat=${env:BIG_BENCH_hive_default_fileformat_tmp_table};
 
 -- ###########################
+-- HDFS settings
+-- ###########################
+set dfs.block.size=${env:BIG_BENCH_dfs.block.size};
+
+-- ###########################
 -- ORC settings
 -- ###########################
 set hive.exec.orc.default.block.size=${env:BIG_BENCH_hive.exec.orc.default.block.size};
