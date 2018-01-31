@@ -35,6 +35,13 @@ set bigbench.hive.optimize.sampling.orderby.percent=0.1;
 -- "LOAD_STAGE" file format and query result fileformat can be controlled independently.
 set hive.default.fileformat=${env:BIG_BENCH_hive_default_fileformat_tmp_table};
 
+-- ###########################
+-- ORC settings
+-- ###########################
+set hive.exec.orc.default.block.size=${env:BIG_BENCH_hive.exec.orc.default.block.size}
+set hive.exec.orc.default.stripe.size=${env:BIG_BENCH_hive.exec.orc.default.stripe.size}
+set hive.exec.orc.default.compress=${env:BIG_BENCH_hive.exec.orc.default.compress}
+
 -- if you cluster has good cpu's but limited network bandwith, this could speed up the exchange of intermediate results (this option should be turund on if you cluster has high 'net wait i/o%'
 -- set hive.exec.compress.intermediate=true;
 -- set mapred.map.output.compression.codec=org.apache.hadoop.io.compress.SnappyCodec;
