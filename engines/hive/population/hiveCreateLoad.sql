@@ -7,7 +7,7 @@
 
 set hdfsDataPath=${hiveconf:bigbench.data_path};
 set fieldDelimiter=|;
-set tableFormat=ORC;
+set tableFormat=${env:BIG_BENCH_hive_default_fileformat_source_table};
 set temporaryTableSuffix=_temporary;
 
 set customerTableName=customer;
