@@ -38,9 +38,16 @@ set hive.default.fileformat=${env:BIG_BENCH_hive_default_fileformat_tmp_table};
 -- ###########################
 -- ORC settings
 -- ###########################
-set hive.exec.orc.default.block.size=${env:BIG_BENCH_hive.exec.orc.default.block.size}
-set hive.exec.orc.default.stripe.size=${env:BIG_BENCH_hive.exec.orc.default.stripe.size}
-set hive.exec.orc.default.compress=${env:BIG_BENCH_hive.exec.orc.default.compress}
+set hive.exec.orc.default.block.size=${env:BIG_BENCH_hive.exec.orc.default.block.size};
+set hive.exec.orc.default.stripe.size=${env:BIG_BENCH_hive.exec.orc.default.stripe.size};
+set hive.exec.orc.default.compress=${env:BIG_BENCH_hive.exec.orc.default.compress};
+
+-- ###########################
+-- Parquet settings
+-- ###########################
+set parquet.block.size=${env:BIG_BENCH_parquet.block.size};
+set parquet.page.size=${env:BIG_BENCH_parquet.page.size};
+set parquet.compression=${env:BIG_BENCH_parquet.compression};
 
 -- if you cluster has good cpu's but limited network bandwith, this could speed up the exchange of intermediate results (this option should be turund on if you cluster has high 'net wait i/o%'
 -- set hive.exec.compress.intermediate=true;
