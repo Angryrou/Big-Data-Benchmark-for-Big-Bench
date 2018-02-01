@@ -43,7 +43,6 @@ set dfs.block.size=${env:BIG_BENCH_dfs.block.size};
 -- ###########################
 -- ORC settings
 -- ###########################
-set hive.exec.orc.default.block.size=${env:BIG_BENCH_hive.exec.orc.default.block.size};
 set hive.exec.orc.default.stripe.size=${env:BIG_BENCH_hive.exec.orc.default.stripe.size};
 set hive.exec.orc.default.compress=${env:BIG_BENCH_hive.exec.orc.default.compress};
 
