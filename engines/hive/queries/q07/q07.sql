@@ -41,7 +41,7 @@ CREATE TABLE ${hiveconf:RESULT_TABLE} (
   cnt      BIGINT
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'
-STORED AS ${hiveconf:bigbench.tableFormat} LOCATION '${hiveconf:RESULT_DIR}';
+STORED AS ${env:BIG_BENCH_hive_default_fileformat_result_table} LOCATION '${hiveconf:RESULT_DIR}';
 
 -- the real query part
 INSERT INTO TABLE ${hiveconf:RESULT_TABLE}
