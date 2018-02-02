@@ -50,7 +50,6 @@ set hive.exec.orc.default.compress=${env:BIG_BENCH_hive.exec.orc.default.compres
 -- Parquet settings
 -- ###########################
 set parquet.block.size=${env:BIG_BENCH_parquet.block.size};
-set parquet.page.size=${env:BIG_BENCH_parquet.page.size};
 set parquet.compression=${env:BIG_BENCH_parquet.compression};
 
 -- if you cluster has good cpu's but limited network bandwith, this could speed up the exchange of intermediate results (this option should be turund on if you cluster has high 'net wait i/o%'
