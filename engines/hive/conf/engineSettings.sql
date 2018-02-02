@@ -144,6 +144,12 @@ set parquet.compression=UNCOMPRESSED;
 -- ============================;
 -- Print most important properties;
 -- ============================;
+--file format
+set dfs.block.size;
+set hive.exec.orc.default.stripe.size;
+set hive.exec.orc.default.compress;
+set parquet.block.size;
+set parquet.compression;
 --exec engine and optimizer
 set hive.execution.engine;
 set hive.cbo.enable;
