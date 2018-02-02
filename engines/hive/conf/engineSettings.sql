@@ -126,19 +126,19 @@ set parquet.compression=UNCOMPRESSED;
 
 -- you should really turn these options on for your whole cluster, not just for bigbench
 -- predicate pushdown for ORC-files (eager filtering of columns)
--- set hive.optimize.ppd=true;
--- set hive.optimize.ppd.storage=true;
--- set hive.ppd.recognizetransivity=false;
--- set hive.optimize.index.filter=true;
--- set hive.stats.autogather=true;
--- set hive.auto.convert.sortmerge.join=true;
--- set hive.vectorized.execution.enabled=true;
--- set hive.vectorized.execution.reduce.enabled=true;
--- set hive.cbo.enable=true;
--- set hive.compute.query.using.stats=true;
--- set hive.stats.fetch.column.stats=true;
--- set hive.stats.fetch.partition.stats=true;
--- set hive.script.operator.truncate.env=true;
+set hive.optimize.ppd=true;
+set hive.optimize.ppd.storage=true;
+set hive.ppd.recognizetransivity=false;
+set hive.optimize.index.filter=true;
+set hive.stats.autogather=true;
+set hive.auto.convert.sortmerge.join=true;
+set hive.vectorized.execution.enabled=true;
+set hive.vectorized.execution.reduce.enabled=true;
+set hive.cbo.enable=true;
+set hive.compute.query.using.stats=true;
+set hive.stats.fetch.column.stats=true;
+set hive.stats.fetch.partition.stats=true;
+set hive.script.operator.truncate.env=true;
 
 
 -- ============================;
