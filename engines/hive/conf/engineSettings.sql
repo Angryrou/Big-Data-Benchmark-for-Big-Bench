@@ -37,20 +37,26 @@ set hive.default.fileformat=${env:BIG_BENCH_hive_default_fileformat_tmp_table};
 
 -- ###########################
 -- HDFS settings
+-- This parameter will be applied to both ORC and Parquet during generation.        
+-- Default: 268435456 (256MB)
 -- ###########################
-set dfs.block.size=${env:BIG_BENCH_dfs.block.size};
+set dfs.block.size=268435456;
 
 -- ###########################
 -- ORC settings
 -- ###########################
-set hive.exec.orc.default.stripe.size=${env:BIG_BENCH_hive.exec.orc.default.stripe.size};
-set hive.exec.orc.default.compress=${env:BIG_BENCH_hive.exec.orc.default.compress};
+-- Stripe size. Default: 67108864 (64MB)
+set hive.exec.orc.default.stripe.size=67108864;
+-- Compression codec. Choices are: NONE, ZLIB, SNAPPY. Default: ZLIB
+set hive.exec.orc.default.compress=ZLIB;
 
 -- ###########################
 -- Parquet settings
 -- ###########################
-set parquet.block.size=${env:BIG_BENCH_parquet.block.size};
-set parquet.compression=${env:BIG_BENCH_parquet.compression};
+-- Row group size. Default: 134217728 (128MB)
+set parquet.block.size=134217728;
+-- choices are: UNCOMPRESSED, GZIP, SNAPPY. default: UNCOMPRESSED
+set parquet.compression=UNCOMPRESSED;
 
 -- if you cluster has good cpu's but limited network bandwith, this could speed up the exchange of intermediate results (this option should be turund on if you cluster has high 'net wait i/o%'
 -- set hive.exec.compress.intermediate=true;
