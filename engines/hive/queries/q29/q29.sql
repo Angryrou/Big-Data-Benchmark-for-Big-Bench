@@ -19,7 +19,7 @@
 -- C) pure SQL: produce pairings by self joining on order_number and filtering out left.item_sk < right.item_sk
 
 -- Resources
-ADD JAR ${hiveconf:bigbench.resources.dir}/bigbenchqueriesmr.jar;
+ADD JAR ${env:BIG_BENCH_QUERIES_DIR}/Resources/bigbenchqueriesmr.jar;
 CREATE TEMPORARY FUNCTION makePairs AS 'io.bigdatabenchmark.v1.queries.udf.PairwiseUDTF';
 
 
