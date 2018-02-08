@@ -11,9 +11,9 @@
 -- and the sentence and word in sentence leading to this classification
 
 -- Resources
-ADD JAR ${hiveconf:bigbench.resources.dir}/opennlp-maxent-3.0.3.jar;
-ADD JAR ${hiveconf:bigbench.resources.dir}/opennlp-tools-1.6.0.jar;
-ADD JAR ${hiveconf:bigbench.resources.dir}/bigbenchqueriesmr.jar;
+ADD JAR ${env:BIG_BENCH_QUERIES_DIR}/Resources/opennlp-maxent-3.0.3.jar;
+ADD JAR ${env:BIG_BENCH_QUERIES_DIR}/Resources/opennlp-tools-1.6.0.jar;
+ADD JAR ${env:BIG_BENCH_QUERIES_DIR}/Resources/bigbenchqueriesmr.jar;
 CREATE TEMPORARY FUNCTION extract_sentiment AS 'io.bigdatabenchmark.v1.queries.q10.SentimentUDF';
 
 -- Query parameters
