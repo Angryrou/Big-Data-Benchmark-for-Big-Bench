@@ -1,4 +1,8 @@
 logs/
 derby.log
 TempStatsStore/
+src/bigbench-ml-spark-2x/project
+src/bigbench-ml-spark-2x/target
+src/bigbench-ml-spark-1x/project
+src/bigbench-ml-spark-1x/target
 .idea/
