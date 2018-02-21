@@ -47,6 +47,8 @@ set dfs.block.size=268435456;
 -- ###########################
 -- Stripe size. Default: 67108864 (64MB)
 set hive.exec.orc.default.stripe.size=67108864;
+-- Compression chunk size. Default: 262144 (256KB)
+set hive.exec.orc.default.buffer.size=262144;
 -- Compression codec. Choices are: NONE, ZLIB, SNAPPY. Default: ZLIB
 set hive.exec.orc.default.compress=ZLIB;
 
@@ -55,6 +57,8 @@ set hive.exec.orc.default.compress=ZLIB;
 -- ###########################
 -- Row group size. Default: 134217728 (128MB)
 set parquet.block.size=134217728;
+-- Data page size. Default: 1048576 (1MB)
+set parquet.page.size=1048576;
 -- choices are: UNCOMPRESSED, GZIP, SNAPPY. default: UNCOMPRESSED
 set parquet.compression=UNCOMPRESSED;
 
@@ -147,8 +151,10 @@ set hive.script.operator.truncate.env=true;
 --file format
 set dfs.block.size;
 set hive.exec.orc.default.stripe.size;
+set hive.exec.orc.default.buffer.size;
 set hive.exec.orc.default.compress;
 set parquet.block.size;
+set parquet.page.size;
 set parquet.compression;
 --exec engine and optimizer
 set hive.execution.engine;
