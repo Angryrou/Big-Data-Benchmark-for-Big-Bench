@@ -1,5 +1,8 @@
 #./bin/bigBench runBenchmark  -i CLEAN_ALL
 
+export BIG_BENCH_HOME=~/chenghao/Big-Data-Benchmark-for-Big-Bench
+export PATH=${BIG_BENCH_HOME}/bin/:${PATH}
+
 for sf in 100
 do 
     export SPARK_PARAMS="\
