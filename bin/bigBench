@@ -97,11 +97,23 @@ export BIG_BENCH_DATA_GENERATOR_DIR="$BIG_BENCH_HOME/data-generator"
 export BIG_BENCH_TOOLS_DIR="$BIG_BENCH_HOME/tools"
 export BIG_BENCH_LOGS_DIR="$BIG_BENCH_HOME/logs"
 
+USER_SETTINGS="$BIG_BENCH_CONF_DIR/userSettings.conf"
+if [ ! -f "$USER_SETTINGS" ]
+then
+  echo "User settings file $USER_SETTINGS not found"
+  exit 1
+else
+  source "$USER_SETTINGS"
+fi
+
+echo "---> at file bigbench: BINARY is $BINARY <---"
+
 ## ===================================================
 ## Data generation options
 ## ===================================================
 
 #do not touch lines below, unless you are sure you need to tamper with that
+echo "---> BIG_BENCH_HADOOP_CONF is ${BIG_BENCH_HADOOP_CONF} <---"
 export BIG_BENCH_DATAGEN_CORE_SITE="$BIG_BENCH_HADOOP_CONF/core-site.xml"
 export BIG_BENCH_DATAGEN_HDFS_SITE="$BIG_BENCH_HADOOP_CONF/hdfs-site.xml"
 
@@ -119,14 +131,14 @@ find "$BIG_BENCH_HOME" -name '*.py' -exec chmod 755 {} +
 ## ===================================================
 ## source user configurable settings
 ## ===================================================
-USER_SETTINGS="$BIG_BENCH_CONF_DIR/userSettings.conf"
-if [ ! -f "$USER_SETTINGS" ]
-then
-  echo "User settings file $USER_SETTINGS not found"
-  exit 1
-else
-  source "$USER_SETTINGS"
-fi
+#USER_SETTINGS="$BIG_BENCH_CONF_DIR/userSettings.conf"
+#if [ ! -f "$USER_SETTINGS" ]
+#then
+#  echo "User settings file $USER_SETTINGS not found"
+#  exit 1
+#else
+#  source "$USER_SETTINGS"
+#fi
 
 ## ===================================================
 ## all static settings sourced, start checking runtime settings
@@ -291,12 +303,16 @@ if [ ! -d "$BIG_BENCH_ENGINE_DIR" ]
 then
   echo "Engine directory $BIG_BENCH_ENGINE_DIR not found. Aborting script..."
   exit 1
+else 
+  echo "---> at bin/bigbench BIG_BENCH_ENGINE_DIR is $BIG_BENCH_ENGINE_DIR <---"
 fi
 
 if [ ! -d "$BIG_BENCH_ENGINE_CONF_DIR" ]
 then
   echo "Engine configuration directory $BIG_BENCH_ENGINE_CONF_DIR not found. Aborting script..."
   exit 1
+else
+  echo "---> at bin/bigbench BIG_BENCH_ENGINE_CONF_DIR is $BIG_BENCH_ENGINE_CONF_DIR <---"
 fi
 
 ## ===================================================
@@ -319,6 +335,8 @@ then
   echo "Engine configuration directory $BIG_BENCH_ENGINE_BIN_DIR not found. Aborting script..."
   exit 1
 fi
+
+echo "---> at bin/bigbench, after source engineSettings.conf, BINARY is $BINARY. <--- "
 
 # as the module's bin directory is known at this point, the help can list all modules within that directory
 # if the user has not specified a module, stop execution here
@@ -368,6 +386,7 @@ fi
 
 # check if the engine's run method was implemented properly
 ENGINE_RUN_METHOD="runEngineCmd"
+echo ">>> bin/bigbench: line 389, BINARY: $BINARY <<<"
 if ! declare -F "$ENGINE_RUN_METHOD" > /dev/null 2>&1
 then
   echo "$ENGINE_RUN_METHOD was not implemented, aborting script"
